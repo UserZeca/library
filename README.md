@@ -1,4 +1,4 @@
-# infoPharna
+# Library/ Biblioteca
 
 [![project name](https://img.shields.io/badge/UserZeca-ZecaFlix-red)](https://github.com/UserZeca)
 [![licence mit](https://img.shields.io/badge/licence-MIT-blue.svg)](https://github.com/UserZeca/ZecaFlix-front-end-react/blob/master/LICENSE)
