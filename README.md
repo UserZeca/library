@@ -34,7 +34,7 @@ Roda o servidor do projeto.
 + Vá até a pasta backend-library 
 + Rode o comando **npm start**, dentro da pasta.
 + Abra [http://localhost:8080/api/users](http://localhost:8080/api/users) para visualizar todos os usuários;
-+ Abra [http://localhost:8080/videos](http://localhost:8080/api/books)  para visualizar todos os livros;
++ Abra [http://localhost:8080/books](http://localhost:8080/api/books)  para visualizar todos os livros;
 + Abra a pasta **routes** para visualizar todas as rotas disponíveis.
 
 ### `npm start` (front-end)
