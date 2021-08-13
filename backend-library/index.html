@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+        <title>Arquivo de Teste do Backend</title>
+
+
+    </head>
+
+    <body>
+
+        <input id="fileImageProfile" type="file">
+        <img src="" id="profileImage" alt="">
+
+        <script>
+
+            //-------------------- Repositories User ------------------------
+
+            //---------------------- Edit User ------------------------------
+            async function editUser(user){ 
+                
+                let oldData = await fetch(`http://localhost:8080/api/user/${user.id}`, {method: 'GET'})
+                .then(response => response.json())
+                .then((result) => { return result})
+                .catch(error => console.log('error', error));
+                
+                // Pensar em passar essa parte para o backend
+
+                oldData.name = user.name != undefined ? user.name : oldData.name;
+                oldData.email = user.email != undefined ? user.email : oldData.email;
+                oldData.password = user.password != undefined ? user.password : oldData.password;
+                oldData.profilePhotoPath = user.profilePhotoPath != undefined ? user.profilePhotoPath : oldData.profilePhotoPath;
+                
+            
+                if(oldData.bookList != undefined && user.bookList != undefined ){
+                    oldData.bookList.push(...user.bookList);
+                }else{
+                    oldData.bookList = [user.bookList];
+
+                }
+
+                console.log(oldData.bookList);
+
+                // --------------------------------------------------------
+                
+                var myHeaders = new Headers();
+
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'PUT',
+                    headers: myHeaders,
+                    body: JSON.stringify(oldData),
+                    redirect: 'follow'
+                };
+
+                fetch(`http://localhost:8080/api/user/${user.id}`, requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+          
+            }
+            //----------------------------------------------------------------
+            
+            //----------------------------------- Add User ----------------------------
+
+            async function addUser(user){
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var newUser = {
+                    name: user.name,
+                    email: user.email,
+                    password: user.password,
+                    profilePhotoPath: user.profilePhotoPath
+                };
+
+                var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: JSON.stringify(newUser),
+                redirect: 'follow'
+                };
+
+                fetch('http://localhost:8080/api/user', requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+
+
+            }
+
+            //----------------------------------------------------------------
+
+
+            // ------------------------- Remove User -------------------------
+
+            async function removeUser(id){
+                
+                var requestOptions = {
+                    method: 'DELETE',
+                    redirect: 'follow'
+                };
+
+                fetch(`http://localhost:8080/api/user/${id}`, requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+
+
+
+            }
+            /*
+                Actions 
+
+            editUser({
+                id: 'EzZZ6ZWHMaozwFMievdC',
+                bookList: ['Plantio conciente v2']
+            })
+
+            addUser({
+                name: 'Ivo',
+                email:'Ivo.hortas@gmail.com',
+                password: '121231312',
+                profilePhotoPath: 'sdafkdsfsdf5454654'
+            })
+                removeUser('GyYkjbQxrX6loybKJhek');
+            
+            */
+
+
+            //-------------------- Repositories Book ------------------------
+
+
+            
+            async function addBook(book){
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                var newBook = {
+                    title: book.title,
+                    author: book.author,
+                    publishingCompany: book.publishingCompany,
+                    edition: book.edition
+                };
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: JSON.stringify(newBook),
+                    redirect: 'follow'  
+                };
+
+                fetch('http://localhost:8080/api/book', requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+
+
+            }
+
+
+
+            
+            async function removeBook(id){
+                
+                var requestOptions = {
+                    method: 'DELETE',
+                    redirect: 'follow'
+                };
+
+                fetch(`http://localhost:8080/api/book/${id}`, requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+
+
+            }
+
+            async function editBook(book){ 
+                
+                let oldData = await fetch(`http://localhost:8080/api/book/${book.id}`, {method: 'GET'})
+                .then(response => response.json())
+                .then((result) => { return result})
+                .catch(error => console.log('error', error));
+                
+                // Pensar em passar essa parte para o backend
+
+                oldData.title = book.title != undefined ? book.title : oldData.title;
+                oldData.author = book.author != undefined ? book.author : oldData.author;
+                oldData.publishingCompany = book.publishingCompany != undefined ? book.publishingCompany : oldData.publishingCompany;
+                oldData.edition = book.edition != undefined ? book.edition : oldData.edition;
+                
+            
+                // --------------------------------------------------------
+                
+                var myHeaders = new Headers();
+
+                myHeaders.append("Content-Type", "application/json");
+
+                var requestOptions = {
+                    method: 'PUT',
+                    headers: myHeaders,
+                    body: JSON.stringify(oldData),
+                    redirect: 'follow'
+                };
+
+                fetch(`http://localhost:8080/api/book/${book.id}`, requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+          
+            }  
+
+            
+            async function getAllBooks(){
+
+                var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+                };
+
+                const data = await fetch("http://localhost:8080/api/books", requestOptions)
+                .then(response => response.json())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
+
+
+                return data;
+
+            }
+            
+            
+            //console.log(getAllBooks());
+
+
+            
+            // ---------------------------------------------------------------------------------
+            
+            
+            
+            /* Actions
+            
+            editBook({
+                id: 'yV8EitcB5rjXB4IoNhH7',
+                title: 'Testando código',
+                author: 'Eu mesmo' ,
+                publishingCompany: 'Por eu mesmo' ,
+                edition: 'tentando novamente 2'
+
+            })
+
+
+            addBook({
+                title: 'Testando código',
+                author: 'Eu mesmo' ,
+                publishingCompany: 'Por eu mesmo' ,
+                edition: 'tentando novamente'
+
+            })
+            
+            
+            
+            removeBook('H5xKyfZWB7oh87KFpi4A');
+            
+            */
+           
+
+
+
+
+
+            // -------------------------- Upload image ----------------------------------
+
+            const getProfileImage = async (public_id) => {
+
+                try {
+
+                    var requestOptions = {
+                    method: 'GET',
+                    redirect: 'follow'
+                    };
+
+                    console.log(public_id)
+
+                    const data = await fetch(`http://localhost:8080/api/user/profile-image/${public_id}`, requestOptions)
+                    .then(response => response.json())
+                    .then(result => console.log(result))
+                    .catch(error => console.log('error', error));
+
+
+                    
+                } catch (error) {
+                    console.log(error);
+                }
+
+
+            }
+
+
+
+            const uploadImageCloudinary = async (base64EncodedImage) => {
+
+                try{
+
+                    const idImage = await fetch('http://localhost:8080/api/user/profile-image/upload', {
+                        method: 'POST',
+                        body: JSON.stringify({data: base64EncodedImage}),
+                        headers: { 'Content-type': 'application/json'}
+                    })
+                    .then(response => response.json())
+                    .then((result) =>{return result})
+                    .catch(error => console.log('error', error));
+
+                    
+
+                }catch (error){
+
+                    console.log(error);
+
+                }
+
+            }
+
+
+            const login = async() => {
+                
+                try {
+
+                    var requestOptions = {
+                    method: 'GET',
+                    redirect: 'follow'
+                    };
+
+
+                    const data = await fetch('http://localhost:8080/api/login', requestOptions)
+
+
+                } catch (error) {
+                    console.log(error);
+                }
+                
+
+            }
+
+            login();
+
+            //getProfileImage('thqsbagvvicewiambdo0');
+
+
+            const preview = document.getElementById("profileImage");
+            const fileSelector = document.getElementById('fileImageProfile');
+            fileSelector.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+               // console.log(file);
+                
+                const reader = new FileReader();
+
+                if (file) {
+                    reader.readAsDataURL(file);
+                    reader.addEventListener("load", function () {
+                        // convert image file to base64 string
+                    
+                        preview.src = reader.result;
+                        const idImage = uploadImageCloudinary(reader.result);
+                        console.log(reader.result);
+                        console.log(`ID_IMAGE: ${idImage}`);
+                    }, false);
+
+                }
+            
+            });
+
+            
+
+
+        </script>
+
+
+    </body>
+
+
+
+</html>
